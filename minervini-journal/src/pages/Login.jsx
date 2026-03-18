@@ -127,7 +127,7 @@ export default function Login({ setUser }) {
 
   return (
     <div className="min-h-screen bg-bg flex flex-col items-center justify-center p-6">
-      <h1 className="font-display text-gold text-4xl mb-2">Minervini Journal</h1>
+      <h1 className="font-display text-gold text-4xl mb-2">Meshal Journal</h1>
       <p className="text-muted text-sm mb-8 font-mono">TRADING JOURNAL</p>
 
       <div className="w-full max-w-sm">

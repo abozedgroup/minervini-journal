@@ -265,7 +265,7 @@ export function generateStockReport(stock, strategies = [], currentPrice = null)
   ${attSection}
 
   <div style="margin-top:40px; border-top:1px solid #eee; padding-top:10px; font-size:10px; color:#bbb; text-align:center;">
-    Minervini Trading Journal · ${stock.ticker} · ${new Date().toLocaleDateString('ar-SA')}
+    Meshal Trading Journal · ${stock.ticker} · ${new Date().toLocaleDateString('ar-SA')}
   </div>
 
   <script>

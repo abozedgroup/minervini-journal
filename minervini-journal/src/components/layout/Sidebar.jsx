@@ -74,7 +74,7 @@ export default function Sidebar({ user, setUser, logout }) {
       <aside className="hidden md:flex fixed right-0 top-0 h-screen w-[220px] bg-s1 border-l border-border flex-col z-10">
         <div className="p-5 border-b border-border">
           <div className="font-display text-gold text-xl">
-            {displayUser ? displayUser.username : 'Minervini Journal'}
+            {displayUser ? displayUser.username : 'Meshal Journal'}
           </div>
           <div className="text-muted font-mono text-xs tracking-widest mt-1">
             TRADING JOURNAL
