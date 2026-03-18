@@ -3,13 +3,58 @@ import { loadData, saveData } from '../utils/storage';
 import { useToast } from '../components/ui/Toast';
 import Modal from '../components/ui/Modal';
 import { initialStrategyForm, migrateFormToStrategy, buildTagsFromStrategy, migrateStrategy, buildExitRulesForStrategy } from '../utils/strategySchema';
-import { defaultTrendConditions, defaultEntryConditions, defaultExecutionConditions, flattenExecutionToChecklist, inflateChecklistToExecution } from '../utils/technicalConditionsSchema';
+import { defaultTrendConditions, defaultEntryConditions, defaultExecutionConditions, flattenExecutionToChecklist, inflateChecklistToExecution, TREND_PRESETS, ENTRY_PRESETS } from '../utils/technicalConditionsSchema';
 import StrategyBuilderPage from './StrategyBuilderPage';
 
+const _minFund = (eps25, rev20, float50, instInc, earn14) => ({
+  eps: {
+    quarterlyGrowth: { enabled: !!eps25, value: eps25 || 25 },
+    annualGrowth:    { enabled: !!eps25, value: eps25 || 25 },
+    acceleration:    { enabled: !!eps25 },
+    beatEstimates:   { enabled: false, value: 5 },
+  },
+  revenue: {
+    quarterlyGrowth: { enabled: !!rev20, value: rev20 || 20 },
+    annualGrowth:    { enabled: !!rev20, value: rev20 || 20 },
+    acceleration:    { enabled: !!rev20 },
+  },
+  margins:     { netMargin: { enabled: false, value: 0 }, grossMargin: { enabled: false, value: 0 } },
+  balance:     { deRatio: { enabled: false, value: 1.5 }, float: { enabled: !!float50, value: float50 || 50 } },
+  institutional: { ownership: { enabled: false, value: 10 }, increasing: { enabled: !!instInc } },
+  earnings:    { daysToNext: { enabled: !!earn14, value: earn14 || 14 } },
+});
+
 const DEFAULT_STRATEGIES = [
-  { id: 1, name: 'Minervini Core', type: 'mixed', icon: '📈', stats: { winRate: 71, avgR: 2.8, profitFactor: 3.2, trades: 28, rrMin: 3 }, tags: ['VCP', 'Pivot', 'EPS+25%', 'RS≥85'] },
-  { id: 2, name: "O'Neil CANSLIM", type: 'mixed', icon: '🔭', stats: { winRate: 67, avgR: 2.2, profitFactor: 2.7, trades: 15, rrMin: 2.5 }, tags: ['EMA 10/21', 'Cup & Handle', 'Revenue+20%'] },
-  { id: 3, name: 'RSI Momentum', type: 'technical', icon: '⚡', stats: { winRate: 59, avgR: 1.9, profitFactor: 2.1, trades: 22, rrMin: 2 }, tags: ['RSI 50-70', 'EMA 200', 'Volume Surge'] },
+  {
+    id: 1, name: 'Minervini Core', type: 'mixed', icon: '📈', timeframe: 'Swing',
+    tags: ['VCP', 'Pivot Breakout', 'EPS+25%', 'RS≥85'],
+    stats: { winRate: 71, avgR: 2.8, profitFactor: 3.2, trades: 28, rrMin: 3 },
+    trendConditions: TREND_PRESETS.minervini,
+    entryConditions: { ...defaultEntryConditions(), patterns: ENTRY_PRESETS.minervini.patterns, volumeAtEntry: { enabled: true, pct: 40 } },
+    executionConditions: defaultExecutionConditions(),
+    fundamental: _minFund(25, 20, 50, true, 14),
+    exitRules: {},
+  },
+  {
+    id: 2, name: "O'Neil CANSLIM", type: 'mixed', icon: '🔭', timeframe: 'Swing',
+    tags: ['Cup & Handle', 'Flat Base', 'EPS+25%', 'RS≥90'],
+    stats: { winRate: 67, avgR: 2.2, profitFactor: 2.7, trades: 15, rrMin: 2.5 },
+    trendConditions: TREND_PRESETS.oneil,
+    entryConditions: { ...defaultEntryConditions(), patterns: ENTRY_PRESETS.oneil.patterns, volumeAtEntry: { enabled: true, pct: 50 } },
+    executionConditions: defaultExecutionConditions(),
+    fundamental: _minFund(25, 20, null, true, 14),
+    exitRules: {},
+  },
+  {
+    id: 3, name: 'RSI Momentum', type: 'technical', icon: '⚡', timeframe: 'Swing',
+    tags: ['RSI 50-70', 'EMA 200', 'Volume Surge', 'OBV صاعد'],
+    stats: { winRate: 59, avgR: 1.9, profitFactor: 2.1, trades: 22, rrMin: 2 },
+    trendConditions: TREND_PRESETS.momentum,
+    entryConditions: { ...defaultEntryConditions(), patterns: ENTRY_PRESETS.momentum.patterns, volumeAtEntry: { enabled: true, pct: 30 } },
+    executionConditions: defaultExecutionConditions(),
+    fundamental: _minFund(15, null, null, false, null),
+    exitRules: {},
+  },
 ];
 
 const STEPS = ['الأساس', 'الفني', 'المالي', 'المخاطر والخروج', 'مراجعة'];
@@ -67,7 +112,13 @@ export default function Strategies({ user }) {
     if (!username) return;
     const loaded = loadData(username, 'strategies', DEFAULT_STRATEGIES);
     const list = Array.isArray(loaded) ? loaded : DEFAULT_STRATEGIES;
-    setStrategies(list.map(migrateStrategy));
+    // Upgrade legacy default strategies (id 1/2/3) that lack trendConditions
+    const upgraded = list.map((s) => {
+      const def = DEFAULT_STRATEGIES.find((d) => d.id === s.id);
+      if (def && !s.trendConditions) return { ...def, ...s, trendConditions: def.trendConditions, entryConditions: s.entryConditions || def.entryConditions, executionConditions: s.executionConditions || def.executionConditions, fundamental: s.fundamental || def.fundamental };
+      return s;
+    });
+    setStrategies(upgraded.map(migrateStrategy));
   }, [username]);
 
   const saveStrategies = (next) => {
