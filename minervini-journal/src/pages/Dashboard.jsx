@@ -281,8 +281,7 @@ export default function Dashboard({ user, setUser }) {
         </div>
         <div className="flex items-center gap-2">
           <button type="button" onClick={() => setSettingsModalOpen(true)} className="px-3 py-2 rounded-lg border border-border text-muted hover:text-fg hover:bg-s2 text-sm">⚙️ الإعدادات</button>
-          <button type="button" onClick={() => setImportModalOpen(true)} className="px-3 py-2 rounded-lg border border-border text-fg hover:bg-s2 text-sm">استيراد صفقة</button>
-          <button type="button" onClick={() => setAddModalOpen(true)} className="px-4 py-2 rounded-lg bg-gold text-black font-bold text-sm hover:bg-gold/90">+ صفقة جديدة</button>
+          <button type="button" onClick={() => navigate('/watchlist')} className="px-4 py-2 rounded-lg bg-gold text-black font-bold text-sm hover:bg-gold/90">+ إضافة سهم</button>
         </div>
       </header>
 
