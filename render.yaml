@@ -11,8 +11,9 @@ services:
         value: yfinance
 
   # ── React Frontend (Static Site) ───────────────────────
-  - type: static
+  - type: web
     name: minervini-journal
+    runtime: static
     rootDir: minervini-journal
     buildCommand: npm install && npm run build
     staticPublishPath: ./dist
