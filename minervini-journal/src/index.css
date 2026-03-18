@@ -1,0 +1,89 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=Syne:wght@700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: 'IBM Plex Sans Arabic', sans-serif;
+  background-color: #07080a;
+  color: #e2e8f0;
+  direction: rtl;
+}
+
+.font-mono { font-family: 'IBM Plex Mono', monospace; }
+.font-display { font-family: 'Syne', sans-serif; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(100%); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-slide-up {
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes panelIn {
+  from { opacity: 0; transform: translateY(-8px) scale(0.97); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+.animate-panel-in {
+  animation: panelIn 0.15s ease forwards;
+}
+
+/* TipTap / ProseMirror dark theme */
+.ProseMirror {
+  min-height: 350px;
+  padding: 16px;
+  outline: none;
+  direction: rtl;
+  line-height: 1.8;
+  color: #e2e8f4;
+  font-family: 'IBM Plex Sans Arabic', sans-serif;
+  background: #0e1016;
+  border-radius: 8px;
+  border: 1px solid #1e2438;
+}
+.ProseMirror p { margin-bottom: 10px; }
+.ProseMirror h1 { font-size: 1.4rem; font-weight: 700; color: #f0b429; margin: 16px 0 10px; }
+.ProseMirror h2 { font-size: 1.15rem; font-weight: 600; color: #e2e8f4; margin: 14px 0 8px; }
+.ProseMirror h3 { font-size: 1rem; font-weight: 600; color: #6b7a9e; margin: 12px 0 6px; }
+.ProseMirror ul, .ProseMirror ol { padding-right: 24px; margin-bottom: 10px; }
+.ProseMirror li { margin-bottom: 5px; }
+.ProseMirror blockquote {
+  border-right: 3px solid #f0b429;
+  padding-right: 14px;
+  color: #6b7a9e;
+  margin: 10px 0;
+  font-style: italic;
+}
+.ProseMirror img {
+  max-width: 100%;
+  border-radius: 10px;
+  margin: 10px 0;
+  border: 1px solid #1e2438;
+}
+.ProseMirror mark { background: rgba(240,180,41,0.2); color: #f0b429; border-radius: 3px; padding: 0 2px; }
+.ProseMirror a { color: #118ab2; text-decoration: underline; cursor: pointer; }
+.ProseMirror p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  color: #4a5578;
+  pointer-events: none;
+  float: right;
+  height: 0;
+}
+.ProseMirror:focus { outline: none; }
+.tiptap-toolbar button {
+  background: #141720;
+  border: 1px solid #1e2438;
+  color: #e2e8f0;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  margin: 0 2px;
+}
+.tiptap-toolbar button:hover { border-color: #f0b429; color: #f0b429; }
+.tiptap-toolbar button.is-active { background: #f0b429; color: #07080a; border-color: #f0b429; }

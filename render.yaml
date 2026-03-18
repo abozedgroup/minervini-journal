@@ -1,0 +1,30 @@
+services:
+  # ── Python FastAPI Backend ──────────────────────────────
+  - type: web
+    name: minervini-api
+    runtime: python
+    rootDir: minervini-api
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: DATA_SOURCE
+        value: yfinance
+    disk:
+      name: userdata
+      mountPath: /data
+      sizeGB: 1
+
+  # ── React Frontend (Static Site) ───────────────────────
+  - type: web
+    name: minervini-journal
+    runtime: static
+    rootDir: minervini-journal
+    buildCommand: npm install && npm run build
+    staticPublishPath: ./dist
+    envVars:
+      - key: VITE_API_URL
+        value: https://minervini-api.onrender.com
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html

@@ -1,0 +1,27 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__Claude_Preview__preview_start",
+      "Bash(curl -s http://localhost:8000/health)",
+      "Bash(xargs grep:*)",
+      "Bash(find /c/Users/DELL/jornl/minervini-journal/src -type f \\\\\\(-name *.tsx -o -name *.ts -o -name *.jsx -o -name *.js \\\\\\))",
+      "Bash(curl -s -X POST http://localhost:8000/auth/register -H \"Content-Type: application/json\" -d '{\"\"username\"\":\"\"testuser\"\",\"\"password\"\":\"\"password123\"\",\"\"portfolioSize\"\":10000}')",
+      "Bash(curl -s -X POST http://localhost:8000/auth/login -H \"Content-Type: application/json\" -d '{\"\"username\"\":\"\"testuser\"\",\"\"password\"\":\"\"password123\"\"}')",
+      "Bash(curl -s -X POST http://localhost:8000/auth/register -H \"Content-Type: application/json\" -d '{\"\"username\"\":\"\"testuser\"\",\"\"password\"\":\"\"other\"\",\"\"portfolioSize\"\":5000}')",
+      "Bash(curl -s -X POST http://localhost:8000/auth/register -H \"Content-Type: application/json\" -d '{\"\"username\"\":\"\"testuser\"\",\"\"password\"\":\"\"anotherpass\"\",\"\"portfolioSize\"\":5000}')",
+      "Bash(npm run:*)",
+      "Bash(curl -s http://localhost:5173)",
+      "Bash(curl -s http://localhost:8000/price/AAPL)",
+      "Bash(Start-Sleep -Seconds 3)",
+      "Bash(./venv/Scripts/python.exe -c \"import yfinance as yf; t = yf.Ticker\\(''AAPL''\\); h = t.history\\(period=''5d''\\); print\\(''hist empty:'', h.empty\\); print\\(h.tail\\(2\\) if not h.empty else ''empty''\\)\")",
+      "Bash(./venv/Scripts/python.exe -c \"import yfinance; print\\(''yfinance:'', yfinance.__version__\\)\")",
+      "Bash(./venv/Scripts/pip install:*)",
+      "Bash(./venv/Scripts/python.exe -c \"import yfinance as yf; t = yf.Ticker\\(''AAPL''\\); h = t.history\\(period=''5d''\\); print\\(''hist empty:'', h.empty\\); print\\(h[[''Close'',''Volume'']].tail\\(2\\) if not h.empty else ''still empty''\\)\")",
+      "Bash(curl -s http://localhost:8000/price/NVDA)",
+      "Bash(curl -s http://localhost:8000/indicators/AAPL)",
+      "Bash(./venv/Scripts/python.exe -c \":*)",
+      "Bash(curl -s http://localhost:8000/indicators/TSLA)",
+      "Bash(./venv/Scripts/pip freeze:*)"
+    ]
+  }
+}
