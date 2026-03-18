@@ -9,15 +9,10 @@ services:
     envVars:
       - key: DATA_SOURCE
         value: yfinance
-    disk:
-      name: userdata
-      mountPath: /data
-      sizeGB: 1
 
   # ── React Frontend (Static Site) ───────────────────────
-  - type: web
+  - type: static
     name: minervini-journal
-    runtime: static
     rootDir: minervini-journal
     buildCommand: npm install && npm run build
     staticPublishPath: ./dist
