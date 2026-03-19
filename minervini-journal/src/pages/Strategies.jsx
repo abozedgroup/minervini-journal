@@ -110,8 +110,12 @@ export default function Strategies({ user }) {
 
   useEffect(() => {
     if (!username) return;
-    const loaded = loadData(username, 'strategies', DEFAULT_STRATEGIES);
-    const list = Array.isArray(loaded) ? loaded : DEFAULT_STRATEGIES;
+    const stored = loadData(username, 'strategies', null);
+    const list = (stored && Array.isArray(stored)) ? stored : DEFAULT_STRATEGIES;
+    // Auto-save defaults for new users who have no strategies yet
+    if (!stored || !Array.isArray(stored) || stored.length === 0) {
+      saveData(username, 'strategies', DEFAULT_STRATEGIES);
+    }
     // Upgrade legacy default strategies (id 1/2/3) that lack trendConditions
     const upgraded = list.map((s) => {
       const def = DEFAULT_STRATEGIES.find((d) => d.id === s.id);
