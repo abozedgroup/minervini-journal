@@ -9,6 +9,8 @@ services:
     envVars:
       - key: DATA_SOURCE
         value: yfinance
+      - key: PYTHON_VERSION
+        value: "3.11.0"
 
   # ── React Frontend (Static Site) ───────────────────────
   - type: web
